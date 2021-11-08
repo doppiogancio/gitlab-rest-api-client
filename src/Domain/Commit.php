@@ -18,7 +18,7 @@ class Commit
      * @Type("array<int,string>")
      * @var string[]
      */
-    private array $parentIds;
+    private ?array $parentIds;
 
 
     private string $authorEmail;
@@ -31,7 +31,7 @@ class Commit
     private string $committedDate;
 
     /**
-     * @param string[] $parentIds
+     * @param ?string[] $parentIds
      */
     public function __construct(
         string $id,
@@ -39,7 +39,7 @@ class Commit
         string $createdAt,
         string $title,
         string $message,
-        array $parentIds,
+        ?array $parentIds,
         string $authorEmail,
         string $authorName,
         string $authoredDate,
@@ -52,7 +52,7 @@ class Commit
         $this->createdAt      = $createdAt;
         $this->title          = $title;
         $this->message        = $message;
-        $this->parentIds      = $parentIds;
+        ? $this->parentIds    = $parentIds;
         $this->authorEmail    = $authorEmail;
         $this->authorName     = $authorName;
         $this->authoredDate   = $authoredDate;
@@ -87,9 +87,9 @@ class Commit
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getParentIds(): array
+    public function getParentIds(): ?array
     {
         return $this->parentIds;
     }
