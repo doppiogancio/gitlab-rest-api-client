@@ -6,6 +6,17 @@
             "email": "fabrizio.gargiulo@gmail.com"
         }
     ],
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "gitlab",
+        "rest",
+        "api",
+        "http",
+        "client",
+        "guzzle",
+        "php"
+    ],
     "require": {
         "guzzlehttp/guzzle": "^7.4",
         "ext-json": "^8.0",
