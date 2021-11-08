@@ -52,7 +52,7 @@ class Commit
         $this->createdAt      = $createdAt;
         $this->title          = $title;
         $this->message        = $message;
-        ? $this->parentIds    = $parentIds;
+        $this->parentIds      = $parentIds;
         $this->authorEmail    = $authorEmail;
         $this->authorName     = $authorName;
         $this->authoredDate   = $authoredDate;
