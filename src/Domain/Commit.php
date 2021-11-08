@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\GitLab\Domain;
 
 use JMS\Serializer\Annotation\Type;
@@ -29,40 +31,56 @@ class Commit
     private string $committedDate;
 
     /**
-     * @return string
+     * @param string[] $parentIds
      */
+    public function __construct(
+        string $id,
+        string $shortId,
+        string $createdAt,
+        string $title,
+        string $message,
+        array $parentIds,
+        string $authorEmail,
+        string $authorName,
+        string $authoredDate,
+        string $committerEmail,
+        string $committerName,
+        string $committedDate
+    ) {
+        $this->id             = $id;
+        $this->shortId        = $shortId;
+        $this->createdAt      = $createdAt;
+        $this->title          = $title;
+        $this->message        = $message;
+        $this->parentIds      = $parentIds;
+        $this->authorEmail    = $authorEmail;
+        $this->authorName     = $authorName;
+        $this->authoredDate   = $authoredDate;
+        $this->committerEmail = $committerEmail;
+        $this->committerName  = $committerName;
+        $this->committedDate  = $committedDate;
+    }
+
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getShortId(): string
     {
         return $this->shortId;
     }
 
-    /**
-     * @return string
-     */
     public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;
@@ -76,49 +94,31 @@ class Commit
         return $this->parentIds;
     }
 
-    /**
-     * @return string
-     */
     public function getAuthorEmail(): string
     {
         return $this->authorEmail;
     }
 
-    /**
-     * @return string
-     */
     public function getAuthorName(): string
     {
         return $this->authorName;
     }
 
-    /**
-     * @return string
-     */
     public function getAuthoredDate(): string
     {
         return $this->authoredDate;
     }
 
-    /**
-     * @return string
-     */
     public function getCommitterEmail(): string
     {
         return $this->committerEmail;
     }
 
-    /**
-     * @return string
-     */
     public function getCommitterName(): string
     {
         return $this->committerName;
     }
 
-    /**
-     * @return string
-     */
     public function getCommittedDate(): string
     {
         return $this->committedDate;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\GitLab\Domain;
 
 use JMS\Serializer\Annotation\Type;
@@ -15,23 +17,20 @@ class MergeRequest
     private string $state;
     private string $createdAt;
     private string $updatedAt;
-    private ?User $mergedBy = null;
+    private ?User $mergedBy   = null;
     private ?string $mergedAt = null;
 
-    private ?User $closedBy = null;
+    private ?User $closedBy   = null;
     private ?string $closedAt = null;
 
     private string $targetBranch;
     private string $sourceBranch;
     private int $userNotesCount = 0;
-    private int $upvotes = 0;
-    private int $downvotes = 0;
+    private int $upvotes        = 0;
+    private int $downvotes      = 0;
     private User $author;
 
-    /**
-     * @Type("DoppioGancio\GitLab\Domain\User")
-     * @var User|null
-     */
+    /** @Type("DoppioGancio\GitLab\Domain\User") */
     private ?User $assignee;
 
     /**
@@ -52,10 +51,7 @@ class MergeRequest
     private bool $draft;
     private bool $workInProgress;
 
-    /**
-     * @Type("DoppioGancio\GitLab\Domain\Milestone")
-     * @var Milestone
-     */
+    /** @Type("DoppioGancio\GitLab\Domain\Milestone") */
     private Milestone $milestone;
 
     private bool $mergeWithPipelineSucceeds;
@@ -70,156 +66,170 @@ class MergeRequest
      */
     private array $labels;
 
-
-    // TODO to be completed
-
     /**
-     * @return int
+     * @param User[]   $assignees
+     * @param User[]   $reviewers
+     * @param string[] $labels
      */
+    public function __construct(
+        int $id,
+        int $iid,
+        int $projectId,
+        string $title,
+        string $description,
+        string $state,
+        string $createdAt,
+        string $updatedAt,
+        ?User $mergedBy,
+        ?string $mergedAt,
+        ?User $closedBy,
+        ?string $closedAt,
+        string $targetBranch,
+        string $sourceBranch,
+        int $userNotesCount,
+        int $upvotes,
+        int $downvotes,
+        User $author,
+        ?User $assignee,
+        array $assignees,
+        array $reviewers,
+        int $sourceProjectId,
+        int $targetProjectId,
+        bool $draft,
+        bool $workInProgress,
+        Milestone $milestone,
+        bool $mergeWithPipelineSucceeds,
+        string $mergeStatus,
+        string $sha,
+        ?string $mergeCommitSha,
+        ?string $squashCommitSha,
+        array $labels
+    ) {
+        $this->id                        = $id;
+        $this->iid                       = $iid;
+        $this->projectId                 = $projectId;
+        $this->title                     = $title;
+        $this->description               = $description;
+        $this->state                     = $state;
+        $this->createdAt                 = $createdAt;
+        $this->updatedAt                 = $updatedAt;
+        $this->mergedBy                  = $mergedBy;
+        $this->mergedAt                  = $mergedAt;
+        $this->closedBy                  = $closedBy;
+        $this->closedAt                  = $closedAt;
+        $this->targetBranch              = $targetBranch;
+        $this->sourceBranch              = $sourceBranch;
+        $this->userNotesCount            = $userNotesCount;
+        $this->upvotes                   = $upvotes;
+        $this->downvotes                 = $downvotes;
+        $this->author                    = $author;
+        $this->assignee                  = $assignee;
+        $this->assignees                 = $assignees;
+        $this->reviewers                 = $reviewers;
+        $this->sourceProjectId           = $sourceProjectId;
+        $this->targetProjectId           = $targetProjectId;
+        $this->draft                     = $draft;
+        $this->workInProgress            = $workInProgress;
+        $this->milestone                 = $milestone;
+        $this->mergeWithPipelineSucceeds = $mergeWithPipelineSucceeds;
+        $this->mergeStatus               = $mergeStatus;
+        $this->sha                       = $sha;
+        $this->mergeCommitSha            = $mergeCommitSha;
+        $this->squashCommitSha           = $squashCommitSha;
+        $this->labels                    = $labels;
+    }
+
     public function getId(): int
     {
+        // TODO to be completed
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
     public function getIid(): int
     {
         return $this->iid;
     }
 
-    /**
-     * @return int
-     */
     public function getProjectId(): int
     {
         return $this->projectId;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @return string
-     */
     public function getState(): string
     {
         return $this->state;
     }
 
-    /**
-     * @return string
-     */
     public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return string
-     */
     public function getUpdatedAt(): string
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @return User|null
-     */
     public function getMergedBy(): ?User
     {
         return $this->mergedBy;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMergedAt(): ?string
     {
         return $this->mergedAt;
     }
 
-    /**
-     * @return User|null
-     */
     public function getClosedBy(): ?User
     {
         return $this->closedBy;
     }
 
-    /**
-     * @return string|null
-     */
     public function getClosedAt(): ?string
     {
         return $this->closedAt;
     }
 
-    /**
-     * @return string
-     */
     public function getTargetBranch(): string
     {
         return $this->targetBranch;
     }
 
-    /**
-     * @return string
-     */
     public function getSourceBranch(): string
     {
         return $this->sourceBranch;
     }
 
-    /**
-     * @return int
-     */
     public function getUserNotesCount(): int
     {
         return $this->userNotesCount;
     }
 
-    /**
-     * @return int
-     */
     public function getUpvotes(): int
     {
         return $this->upvotes;
     }
 
-    /**
-     * @return int
-     */
     public function getDownvotes(): int
     {
         return $this->downvotes;
     }
 
-    /**
-     * @return User
-     */
     public function getAuthor(): User
     {
         return $this->author;
     }
 
-    /**
-     * @return User|null
-     */
     public function getAssignee(): ?User
     {
         return $this->assignee;
@@ -241,81 +251,51 @@ class MergeRequest
         return $this->reviewers;
     }
 
-    /**
-     * @return int
-     */
     public function getSourceProjectId(): int
     {
         return $this->sourceProjectId;
     }
 
-    /**
-     * @return int
-     */
     public function getTargetProjectId(): int
     {
         return $this->targetProjectId;
     }
 
-    /**
-     * @return bool
-     */
     public function isDraft(): bool
     {
         return $this->draft;
     }
 
-    /**
-     * @return bool
-     */
     public function isWorkInProgress(): bool
     {
         return $this->workInProgress;
     }
 
-    /**
-     * @return Milestone
-     */
     public function getMilestone(): Milestone
     {
         return $this->milestone;
     }
 
-    /**
-     * @return bool
-     */
     public function isMergeWithPipelineSucceeds(): bool
     {
         return $this->mergeWithPipelineSucceeds;
     }
 
-    /**
-     * @return string
-     */
     public function getMergeStatus(): string
     {
         return $this->mergeStatus;
     }
 
-    /**
-     * @return string
-     */
     public function getSha(): string
     {
         return $this->sha;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMergeCommitSha(): ?string
     {
         return $this->mergeCommitSha;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSquashCommitSha(): ?string
     {
         return $this->squashCommitSha;

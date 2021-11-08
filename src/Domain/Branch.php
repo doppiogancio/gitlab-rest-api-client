@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\GitLab\Domain;
 
 class Branch
@@ -14,73 +16,68 @@ class Branch
     private bool $default;
     private string $webUrl;
 
-    /**
-     * @return string
-     */
+    public function __construct(
+        string $name,
+        Commit $commit,
+        bool $merged,
+        bool $protected,
+        bool $developersCanPush,
+        bool $developerCanMerge,
+        bool $canPush,
+        bool $default,
+        string $webUrl
+    ) {
+        $this->name              = $name;
+        $this->commit            = $commit;
+        $this->merged            = $merged;
+        $this->protected         = $protected;
+        $this->developersCanPush = $developersCanPush;
+        $this->developerCanMerge = $developerCanMerge;
+        $this->canPush           = $canPush;
+        $this->default           = $default;
+        $this->webUrl            = $webUrl;
+    }
+
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return Commit
-     */
     public function getCommit(): Commit
     {
         return $this->commit;
     }
 
-    /**
-     * @return bool
-     */
     public function isMerged(): bool
     {
         return $this->merged;
     }
 
-    /**
-     * @return bool
-     */
     public function isProtected(): bool
     {
         return $this->protected;
     }
 
-    /**
-     * @return bool
-     */
     public function isDevelopersCanPush(): bool
     {
         return $this->developersCanPush;
     }
 
-    /**
-     * @return bool
-     */
     public function isDeveloperCanMerge(): bool
     {
         return $this->developerCanMerge;
     }
 
-    /**
-     * @return bool
-     */
     public function isCanPush(): bool
     {
         return $this->canPush;
     }
 
-    /**
-     * @return bool
-     */
     public function isDefault(): bool
     {
         return $this->default;
     }
 
-    /**
-     * @return string
-     */
     public function getWebUrl(): string
     {
         return $this->webUrl;

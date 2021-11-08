@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\GitLab\Repository;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Promise\PromiseInterface;
-use Psr\Http\Message\ResponseInterface;
 use DoppioGancio\GitLab\Domain\Branch;
 use DoppioGancio\GitLab\Url\UrlBuilder;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Promise\PromiseInterface;
 use JMS\Serializer\Serializer;
+use Psr\Http\Message\ResponseInterface;
+
+use function sprintf;
 
 class BranchRepository
 {
@@ -20,14 +25,13 @@ class BranchRepository
         Serializer $serializer,
         UrlBuilder $urlBuilder
     ) {
-        $this->client = $client;
+        $this->client     = $client;
         $this->serializer = $serializer;
         $this->urlBuilder = $urlBuilder;
     }
 
     /**
-     * @return Branch[]
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function list(): PromiseInterface
     {
@@ -36,18 +40,13 @@ class BranchRepository
             $this->urlBuilder->endpoint('repository/branches')
         )->then(function (ResponseInterface $response): array {
             return $this->serializer->deserialize(
-                $response->getBody(),
-                sprintf("array<int,%s>", Branch::class),
+                (string) $response->getBody(),
+                sprintf('array<int,%s>', Branch::class),
                 'json'
             );
         });
     }
 
-    /**
-     * @param string $branchName
-     * @param string $ref
-     * @return PromiseInterface<Branch>
-     */
     public function create(string $branchName, string $ref): PromiseInterface
     {
         return $this->client->requestAsync(
@@ -58,7 +57,7 @@ class BranchRepository
             ])
         )->then(function (ResponseInterface $response): Branch {
             return $this->serializer->deserialize(
-                $response->getBody(),
+                (string) $response->getBody(),
                 Branch::class,
                 'json'
             );

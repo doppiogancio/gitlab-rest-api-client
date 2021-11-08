@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\GitLab\Domain;
 
 class User
@@ -11,49 +13,41 @@ class User
     private string $avatar;
     private string $webUrl;
 
-    /**
-     * @return int
-     */
+    public function __construct(int $id, string $name, string $username, string $state, string $avatar, string $webUrl)
+    {
+        $this->id       = $id;
+        $this->name     = $name;
+        $this->username = $username;
+        $this->state    = $state;
+        $this->avatar   = $avatar;
+        $this->webUrl   = $webUrl;
+    }
+
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @return string
-     */
     public function getState(): string
     {
         return $this->state;
     }
 
-    /**
-     * @return string
-     */
     public function getAvatar(): string
     {
         return $this->avatar;
     }
 
-    /**
-     * @return string
-     */
     public function getWebUrl(): string
     {
         return $this->webUrl;

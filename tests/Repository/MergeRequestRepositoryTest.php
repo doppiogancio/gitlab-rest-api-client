@@ -1,20 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\Test\GitLab\Repository;
 
 use DoppioGancio\GitLab\Client;
+use DoppioGancio\GitLab\Domain\MergeRequest;
+use DoppioGancio\GitLab\Domain\MergeRequestCreate;
+use DoppioGancio\GitLab\Repository\MergeRequestRepository;
 use DoppioGancio\MockedClient\HandlerBuilder;
 use DoppioGancio\MockedClient\MockedGuzzleClientBuilder;
 use DoppioGancio\MockedClient\Route\RouteBuilder;
 use Http\Discovery\Psr17FactoryDiscovery;
 use PHPUnit\Framework\TestCase;
-use DoppioGancio\GitLab\Domain\MergeRequest;
-use DoppioGancio\GitLab\Domain\MergeRequestCreate;
-use DoppioGancio\GitLab\Repository\MergeRequestRepository;
+
+use function assert;
 
 class MergeRequestRepositoryTest extends TestCase
 {
-    public function testList()
+    public function testList(): void
     {
         $repo = $this->getMergeRequestRepository();
 
@@ -22,14 +26,15 @@ class MergeRequestRepositoryTest extends TestCase
         $list = $repo->list()->wait();
 
         $this->assertCount(1, $list);
-        $this->assertEquals("fixed login page css paddings", $list[0]->getDescription());
-        $this->assertEquals("Douwe Maan", $list[0]->getMergedBy()->getName());
+        $mr = $list[0];
+        $this->assertEquals('fixed login page css paddings', $mr->getDescription());
+        $mergedBy = $mr->getMergedBy();
+        $this->assertNotNull($mergedBy);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
-        $repo = $this->getMergeRequestRepository();
-        /** @var MergeRequest $newMr */
+        $repo  = $this->getMergeRequestRepository();
         $newMr = $repo->create(new MergeRequestCreate(
             'aaa',
             'aaa',
@@ -37,18 +42,19 @@ class MergeRequestRepositoryTest extends TestCase
             'aaa',
             'aaa',
         ))->wait();
+        assert($newMr instanceof MergeRequest);
 
-        $this->assertEquals("fixed login page css paddings", $newMr->getDescription());
+        $this->assertEquals('fixed login page css paddings', $newMr->getDescription());
     }
 
-    public function testMerge()
+    public function testMerge(): void
     {
         $repo = $this->getMergeRequestRepository();
 
-        /** @var MergeRequest $mr */
         $mr = $repo->merge(123)->wait();
+        assert($mr instanceof MergeRequest);
 
-        $this->assertEquals("merged", $mr->getState());
+        $this->assertEquals('merged', $mr->getState());
     }
 
     public function getMergeRequestRepository(): MergeRequestRepository
@@ -87,6 +93,7 @@ class MergeRequestRepositoryTest extends TestCase
         );
 
         $client = (new MockedGuzzleClientBuilder($handlerBuilder))->build();
+
         return (new Client($client, 'project-name'))->mergeRequest();
     }
 }
