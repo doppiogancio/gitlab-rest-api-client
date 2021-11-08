@@ -52,7 +52,7 @@ class MergeRequest
     private bool $workInProgress;
 
     /** @Type("DoppioGancio\GitLab\Domain\Milestone") */
-    private Milestone $milestone;
+    private ?Milestone $milestone;
 
     private bool $mergeWithPipelineSucceeds;
     private string $mergeStatus;
@@ -97,7 +97,7 @@ class MergeRequest
         int $targetProjectId,
         bool $draft,
         bool $workInProgress,
-        Milestone $milestone,
+        ?Milestone $milestone,
         bool $mergeWithPipelineSucceeds,
         string $mergeStatus,
         string $sha,
@@ -271,7 +271,7 @@ class MergeRequest
         return $this->workInProgress;
     }
 
-    public function getMilestone(): Milestone
+    public function getMilestone(): ?Milestone
     {
         return $this->milestone;
     }
