@@ -10,7 +10,6 @@ class Commit
 {
     private string $id;
     private string $shortId;
-    private string $createdAt;
     private string $title;
     private string $message;
 
@@ -31,12 +30,11 @@ class Commit
     private string $committedDate;
 
     /**
-     * @param ?string[] $parentIds
+     * @param string[]|null $parentIds
      */
     public function __construct(
         string $id,
         string $shortId,
-        string $createdAt,
         string $title,
         string $message,
         ?array $parentIds,
@@ -49,7 +47,6 @@ class Commit
     ) {
         $this->id             = $id;
         $this->shortId        = $shortId;
-        $this->createdAt      = $createdAt;
         $this->title          = $title;
         $this->message        = $message;
         $this->parentIds      = $parentIds;
@@ -69,11 +66,6 @@ class Commit
     public function getShortId(): string
     {
         return $this->shortId;
-    }
-
-    public function getCreatedAt(): string
-    {
-        return $this->createdAt;
     }
 
     public function getTitle(): string

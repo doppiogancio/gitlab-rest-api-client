@@ -54,7 +54,7 @@ class MergeRequest
     /** @Type("DoppioGancio\GitLab\Domain\Milestone") */
     private ?Milestone $milestone;
 
-    private bool $mergeWithPipelineSucceeds;
+    private bool $mergeWhenPipelineSucceeds;
     private string $mergeStatus;
     private string $sha;
     private ?string $mergeCommitSha;
@@ -98,7 +98,7 @@ class MergeRequest
         bool $draft,
         bool $workInProgress,
         ?Milestone $milestone,
-        bool $mergeWithPipelineSucceeds,
+        bool $mergeWhenPipelineSucceeds,
         string $mergeStatus,
         string $sha,
         ?string $mergeCommitSha,
@@ -131,7 +131,7 @@ class MergeRequest
         $this->draft                     = $draft;
         $this->workInProgress            = $workInProgress;
         $this->milestone                 = $milestone;
-        $this->mergeWithPipelineSucceeds = $mergeWithPipelineSucceeds;
+        $this->mergeWhenPipelineSucceeds = $mergeWhenPipelineSucceeds;
         $this->mergeStatus               = $mergeStatus;
         $this->sha                       = $sha;
         $this->mergeCommitSha            = $mergeCommitSha;
@@ -276,9 +276,9 @@ class MergeRequest
         return $this->milestone;
     }
 
-    public function isMergeWithPipelineSucceeds(): bool
+    public function isMergeWhenPipelineSucceeds(): bool
     {
-        return $this->mergeWithPipelineSucceeds;
+        return $this->mergeWhenPipelineSucceeds;
     }
 
     public function getMergeStatus(): string
@@ -309,28 +309,3 @@ class MergeRequest
         return $this->labels;
     }
 }
-/*
-{
-    "discussion_locked": null,
-  "should_remove_source_branch": true,
-  "force_remove_source_branch": false,
-  "allow_collaboration": false,
-  "allow_maintainer_to_push": false,
-  "web_url": "http://gitlab.example.com/my-group/my-project/merge_requests/1",
-  "references": {
-    "short": "!1",
-    "relative": "my-group/my-project!1",
-    "full": "my-group/my-project!1"
-  },
-  "time_stats": {
-    "time_estimate": 0,
-    "total_time_spent": 0,
-    "human_time_estimate": null,
-    "human_total_time_spent": null
-  },
-  "squash": false,
-  "task_completion_status": {
-    "count": 0,
-    "completed_count": 0
-  }
-*/
