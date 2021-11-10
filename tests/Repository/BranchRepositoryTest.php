@@ -25,7 +25,30 @@ class BranchRepositoryTest extends TestCase
         $list = $repo->list()->wait();
 
         $this->assertCount(1, $list);
-        $this->assertEquals('master', $list[0]->getName());
+        $branch = $list[0];
+
+        $this->assertEquals('master', $branch->getName());
+        $this->assertFalse($branch->isMerged());
+        $this->assertTrue($branch->isProtected());
+        $this->assertTrue($branch->isDefault());
+        $this->assertFalse($branch->isDevelopersCanPush());
+        $this->assertFalse($branch->isDevelopersCanMerge());
+        $this->assertTrue($branch->isCanPush());
+        $this->assertEquals('https://gitlab.example.com/my-group/my-project/-/tree/master', $branch->getWebUrl());
+
+        $commit = $branch->getCommit();
+        $this->assertEquals('john@example.com', $commit->getAuthorEmail());
+        $this->assertEquals('John Smith', $commit->getAuthorName());
+        $this->assertEquals('2012-06-27T05:51:39-07:00', $commit->getAuthoredDate());
+        $this->assertEquals('2012-06-28T03:44:20-07:00', $commit->getCommittedDate());
+        $this->assertEquals('john@example.com', $commit->getCommitterEmail());
+        $this->assertEquals('John Smith', $commit->getCommitterName());
+
+        $this->assertEquals('7b5c3cc8be40ee161ae89a06bba6229da1032a0c', $commit->getId());
+        $this->assertEquals('7b5c3cc', $commit->getShortId());
+        $this->assertEquals('add projects API', $commit->getTitle());
+        $this->assertEquals('add projects API', $commit->getMessage());
+        $this->assertEquals(['4ad91d3c1144c406e50c7b33bae684bd6837faf8'], $commit->getParentIds());
     }
 
     public function testCreate(): void

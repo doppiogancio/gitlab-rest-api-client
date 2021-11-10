@@ -7,45 +7,40 @@ namespace DoppioGancio\GitLab\Domain;
 class Branch
 {
     private string $name;
-    private Commit $commit;
     private bool $merged;
     private bool $protected;
     private bool $developersCanPush;
-    private bool $developerCanMerge;
+    private bool $developersCanMerge;
     private bool $canPush;
     private bool $default;
     private string $webUrl;
+    private Commit $commit;
 
     public function __construct(
         string $name,
-        Commit $commit,
         bool $merged,
         bool $protected,
         bool $developersCanPush,
-        bool $developerCanMerge,
+        bool $developersCanMerge,
         bool $canPush,
         bool $default,
-        string $webUrl
+        string $webUrl,
+        Commit $commit
     ) {
-        $this->name              = $name;
-        $this->commit            = $commit;
-        $this->merged            = $merged;
-        $this->protected         = $protected;
-        $this->developersCanPush = $developersCanPush;
-        $this->developerCanMerge = $developerCanMerge;
-        $this->canPush           = $canPush;
-        $this->default           = $default;
-        $this->webUrl            = $webUrl;
+        $this->name               = $name;
+        $this->merged             = $merged;
+        $this->protected          = $protected;
+        $this->developersCanPush  = $developersCanPush;
+        $this->developersCanMerge = $developersCanMerge;
+        $this->canPush            = $canPush;
+        $this->default            = $default;
+        $this->webUrl             = $webUrl;
+        $this->commit             = $commit;
     }
 
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getCommit(): Commit
-    {
-        return $this->commit;
     }
 
     public function isMerged(): bool
@@ -63,9 +58,9 @@ class Branch
         return $this->developersCanPush;
     }
 
-    public function isDeveloperCanMerge(): bool
+    public function isDevelopersCanMerge(): bool
     {
-        return $this->developerCanMerge;
+        return $this->developersCanMerge;
     }
 
     public function isCanPush(): bool
@@ -81,5 +76,10 @@ class Branch
     public function getWebUrl(): string
     {
         return $this->webUrl;
+    }
+
+    public function getCommit(): Commit
+    {
+        return $this->commit;
     }
 }

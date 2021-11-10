@@ -10,17 +10,23 @@ class User
     private string $name;
     private string $username;
     private string $state;
-    private string $avatar;
+    private ?string $avatarUrl = null;
     private string $webUrl;
 
-    public function __construct(int $id, string $name, string $username, string $state, string $avatar, string $webUrl)
-    {
-        $this->id       = $id;
-        $this->name     = $name;
-        $this->username = $username;
-        $this->state    = $state;
-        $this->avatar   = $avatar;
-        $this->webUrl   = $webUrl;
+    public function __construct(
+        int $id,
+        string $name,
+        string $username,
+        string $state,
+        ?string $avatarUrl,
+        string $webUrl
+    ) {
+        $this->id        = $id;
+        $this->name      = $name;
+        $this->username  = $username;
+        $this->state     = $state;
+        $this->avatarUrl = $avatarUrl;
+        $this->webUrl    = $webUrl;
     }
 
     public function getId(): int
@@ -43,9 +49,9 @@ class User
         return $this->state;
     }
 
-    public function getAvatar(): string
+    public function getAvatarUrl(): ?string
     {
-        return $this->avatar;
+        return $this->avatarUrl;
     }
 
     public function getWebUrl(): string
