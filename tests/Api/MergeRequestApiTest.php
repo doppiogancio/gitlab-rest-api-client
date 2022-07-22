@@ -163,7 +163,7 @@ class MergeRequestApiTest extends TestCase
     public function testCreate(): void
     {
         $repo  = $this->getMergeRequestRepository();
-        $newMr = $repo->create(new MergeRequestCreate(
+        $newMr = $repo->create('project-name', new MergeRequestCreate(
             'aaa',
             'aaa',
             'aaa',
@@ -205,7 +205,7 @@ class MergeRequestApiTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('GET')
-                ->withPath('projects/project-name/merge_requests')
+                ->withPath('/api/v4/projects/project-name/merge_requests')
                 ->withFileResponse(__DIR__ . '/../fixtures/merge_request.list.json')
                 ->build()
         );
@@ -213,7 +213,7 @@ class MergeRequestApiTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('POST')
-                ->withPath('projects/project-name/merge_requests')
+                ->withPath('/api/v4/projects/project-name/merge_requests')
                 ->withFileResponse(__DIR__ . '/../fixtures/merge_request.create.json')
                 ->build()
         );
@@ -221,7 +221,7 @@ class MergeRequestApiTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('PUT')
-                ->withPath('projects/project-name/123/merge')
+                ->withPath('/api/v4/projects/project-name/merge_requests/123/merge')
                 ->withFileResponse(__DIR__ . '/../fixtures/merge_request.merge.json')
                 ->build()
         );

@@ -7,6 +7,7 @@ namespace DoppioGancio\GitLab\Api;
 use DoppioGancio\GitLab\Resource\MergeRequest;
 use DoppioGancio\GitLab\Resource\MergeRequestCreate;
 use GuzzleHttp\Promise\PromiseInterface;
+use League\Uri\UriTemplate;
 use Psr\Http\Message\ResponseInterface;
 
 use function sprintf;
@@ -18,10 +19,14 @@ class MergeRequestApi extends BaseApi
      */
     public function list(string $projectId, array $parameters = []): PromiseInterface
     {
-        // https://gitlab.com/api/v4/projects/{{projectId}}/merge_requests?state=merged&author_username=doppiogancio&order_by=updated_at&sort=desc
-        $url = $this->urlBuilder->endpoint(sprintf('projects/%s/merge_requests', $projectId), $parameters);
+        $uriTemplate = new UriTemplate(
+            '/api/v4/projects/{projectId}/merge_requests'
+        );
 
-        return $this->client->requestAsync('GET', $url)
+        $parameters['projectId'] = $projectId;
+        $uri = $uriTemplate->expand($parameters);
+
+        return $this->client->requestAsync('GET', (string) $uri)
             ->then(function (ResponseInterface $response): array {
                 return $this->serializer->deserialize(
                     (string) $response->getBody(),
@@ -33,10 +38,15 @@ class MergeRequestApi extends BaseApi
 
     public function get(string $projectId, int $mergeRequestIid): PromiseInterface
     {
-        return $this->client->requestAsync(
-            'GET',
-            $this->urlBuilder->endpoint(sprintf('projects/%s/merge_requests/%d', $projectId, $mergeRequestIid))
-        )->then(function (ResponseInterface $response): MergeRequest {
+        $uriTemplate = new UriTemplate(
+            '/api/v4/projects/{projectId}/merge_requests/{mergeRequestId}'
+        );
+
+        $parameters['projectId'] = $projectId;
+        $parameters['mergeRequestId'] = $mergeRequestIid;
+        $uri = $uriTemplate->expand($parameters);
+
+        return $this->client->requestAsync('GET', (string) $uri)->then(function (ResponseInterface $response): MergeRequest {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),
                 MergeRequest::class,
@@ -45,15 +55,17 @@ class MergeRequestApi extends BaseApi
         });
     }
 
-    public function create(MergeRequestCreate $mr): PromiseInterface
+    public function create(string $projectId, MergeRequestCreate $mr): PromiseInterface
     {
-        return $this->client->requestAsync(
-            'POST',
-            $this->urlBuilder->endpoint(
-                'merge_requests',
-                $this->serializer->toArray($mr)
-            )
-        )->then(function (ResponseInterface $response): MergeRequest {
+        $uriTemplate = new UriTemplate(
+            '/api/v4/projects/{projectId}/merge_requests'
+        );
+
+        $parameters['projectId'] = $projectId;
+        $uri = $uriTemplate->expand($parameters);
+
+        return $this->client->requestAsync('POST', (string) $uri)
+            ->then(function (ResponseInterface $response): MergeRequest {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),
                 MergeRequest::class,
@@ -62,13 +74,18 @@ class MergeRequestApi extends BaseApi
         });
     }
 
-    public function merge(string $projectID, int $mergeRequestIid): PromiseInterface
+    public function merge(string $projectId, int $mergeRequestIid): PromiseInterface
     {
-        $url = $this->urlBuilder->endpoint(sprintf('projects/%s/%d/merge', $projectID, $mergeRequestIid));
-        return $this->client->requestAsync(
-            'PUT',
-            $url //$this->urlBuilder->endpoint(sprintf('%d/merge', $mergeRequestIid))
-        )->then(function (ResponseInterface $response): MergeRequest {
+        $uriTemplate = new UriTemplate(
+            '/api/v4/projects/{projectId}/merge_requests/{mergeRequestIid}/merge',
+        );
+
+        $parameters['projectId'] = $projectId;
+        $parameters['mergeRequestIid'] = $mergeRequestIid;
+        $uri = $uriTemplate->expand($parameters);
+
+        return $this->client->requestAsync('PUT', (string) $uri)
+            ->then(function (ResponseInterface $response): MergeRequest {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),
                 MergeRequest::class,

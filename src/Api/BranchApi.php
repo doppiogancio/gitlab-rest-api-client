@@ -16,7 +16,7 @@ class BranchApi extends BaseApi
     {
         return $this->client->requestAsync(
             'GET',
-            $this->urlBuilder->endpoint(sprintf('projects/%s/repository/branches', $projectId))
+            $this->urlBuilder->endpoint(sprintf('/projects/%s/repository/branches', $projectId))
         )->then(function (ResponseInterface $response): array {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),
@@ -30,7 +30,7 @@ class BranchApi extends BaseApi
     {
         return $this->client->requestAsync(
             'GET',
-            $this->urlBuilder->endpoint(sprintf('projects/%s/repository/branches/%s', $projectId, $branchName))
+            $this->urlBuilder->endpoint(sprintf('/projects/%s/repository/branches/%s', $projectId, $branchName))
         )->then(function (ResponseInterface $response): Branch {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),
@@ -42,7 +42,7 @@ class BranchApi extends BaseApi
 
     public function create(string $projectID, string $branchName, string $ref): PromiseInterface
     {
-        $endpoint = sprintf('projects/%s/repository/branches', $projectID);
+        $endpoint = sprintf('/projects/%s/repository/branches', $projectID);
         return $this->client->requestAsync(
             'POST',
             $this->urlBuilder->endpoint($endpoint, [

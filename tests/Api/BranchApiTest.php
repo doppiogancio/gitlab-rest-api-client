@@ -11,9 +11,12 @@ use DoppioGancio\MockedClient\HandlerBuilder;
 use DoppioGancio\MockedClient\MockedGuzzleClientBuilder;
 use DoppioGancio\MockedClient\Route\RouteBuilder;
 use Http\Discovery\Psr17FactoryDiscovery;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
+use Psr\Log\LogLevel;
 use function assert;
 
 class BranchApiTest extends TestCase
@@ -64,8 +67,12 @@ class BranchApiTest extends TestCase
 
     public function getBranchRepository(): BranchApi
     {
+        $log = new Logger('name');
+        $log->pushHandler(new StreamHandler('tests/test.log', Level::Debug));
+
         $handlerBuilder = new HandlerBuilder(
-            Psr17FactoryDiscovery::findServerRequestFactory()
+            Psr17FactoryDiscovery::findServerRequestFactory(),
+            $log
         );
 
         $rb = new RouteBuilder(
@@ -76,7 +83,7 @@ class BranchApiTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('GET')
-                ->withPath('projects/testproject/repository/branches')
+                ->withPath('/projects/testproject/repository/branches')
                 ->withFileResponse(__DIR__ . '/../fixtures/branch.list.json')
                 ->build()
         );
@@ -84,12 +91,11 @@ class BranchApiTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('POST')
-                ->withPath('projects/testproject/repository/branches')
+                ->withPath('/projects/testproject/repository/branches')
                 ->withFileResponse(__DIR__ . '/../fixtures/branch.create.json')
                 ->build()
         );
 
-        $log = new Logger('name');
         $client = (new MockedGuzzleClientBuilder($handlerBuilder, $log))->build();
         return (new Client($client))->branch();
     }
