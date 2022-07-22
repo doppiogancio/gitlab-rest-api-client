@@ -10,19 +10,8 @@ use GuzzleHttp\Promise\PromiseInterface;
 use JMS\Serializer\Serializer;
 use Psr\Http\Message\ResponseInterface;
 
-class MergeRequestApi
+class MergeRequestApi extends BaseResourceManager
 {
-    private ClientInterface $client;
-    private Serializer $serializer;
-    private UrlBuilder $urlBuilder;
-
-    public function __construct(ClientInterface $client, Serializer $serializer, UrlBuilder $urlBuilder)
-    {
-        $this->client = $client;
-        $this->serializer = $serializer;
-        $this->urlBuilder = $urlBuilder;
-    }
-
     public function list(string $projectId, array $parameters = []): PromiseInterface
     {
         $url = $this->urlBuilder->endpoint(sprintf('projects/%s/merge_requests', $projectId), $parameters);

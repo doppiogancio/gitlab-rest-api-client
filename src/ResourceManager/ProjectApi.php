@@ -11,19 +11,8 @@ use GuzzleHttp\Promise\PromiseInterface;
 use JMS\Serializer\Serializer;
 use Psr\Http\Message\ResponseInterface;
 
-class ProjectApi
+class ProjectApi extends BaseResourceManager
 {
-    private ClientInterface $client;
-    private Serializer $serializer;
-    private UrlBuilder $urlBuilder;
-
-    public function __construct(ClientInterface $client, Serializer $serializer)
-    {
-        $this->client = $client;
-        $this->serializer = $serializer;
-        $this->urlBuilder = new UrlBuilder();
-    }
-
     public function list(int $groupId): PromiseInterface
     {
         return $this->client->requestAsync(
