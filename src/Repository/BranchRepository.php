@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DoppioGancio\GitLab\Repository;
 
-use DoppioGancio\GitLab\Domain\Branch;
+use DoppioGancio\GitLab\Resource\Branch;
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DoppioGancio\GitLab\Api;
 
-use DoppioGancio\GitLab\Domain\Project;
+use DoppioGancio\GitLab\Resource\Project;
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;

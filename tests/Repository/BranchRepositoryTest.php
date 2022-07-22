@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DoppioGancio\GitLab\Test\Repository;
 
 use DoppioGancio\GitLab\Client;
-use DoppioGancio\GitLab\Domain\Branch;
+use DoppioGancio\GitLab\Resource\Branch;
 use DoppioGancio\GitLab\Repository\BranchRepository;
 use DoppioGancio\MockedClient\HandlerBuilder;
 use DoppioGancio\MockedClient\MockedGuzzleClientBuilder;

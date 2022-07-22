@@ -2,7 +2,7 @@
 
 namespace DoppioGancio\GitLab\Api;
 
-use DoppioGancio\GitLab\Domain\Group;
+use DoppioGancio\GitLab\Resource\Group;
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;

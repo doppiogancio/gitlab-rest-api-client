@@ -1,6 +1,6 @@
 <?php
 
-namespace DoppioGancio\GitLab\Domain;
+namespace DoppioGancio\GitLab\Resource;
 
 class Group
 {

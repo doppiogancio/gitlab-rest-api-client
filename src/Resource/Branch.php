@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DoppioGancio\GitLab\Domain;
+namespace DoppioGancio\GitLab\Resource;
 
 class Branch
 {

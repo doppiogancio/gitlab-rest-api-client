@@ -2,8 +2,8 @@
 
 namespace DoppioGancio\GitLab\Api;
 
-use DoppioGancio\GitLab\Domain\Branch;
-use DoppioGancio\GitLab\Domain\Project;
+use DoppioGancio\GitLab\Resource\Branch;
+use DoppioGancio\GitLab\Resource\Project;
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;

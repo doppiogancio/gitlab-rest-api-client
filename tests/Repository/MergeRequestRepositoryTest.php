@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace DoppioGancio\Test\GitLab\Repository;
 
 use DoppioGancio\GitLab\Client;
-use DoppioGancio\GitLab\Domain\MergeRequest;
-use DoppioGancio\GitLab\Domain\MergeRequestCreate;
-use DoppioGancio\GitLab\Domain\Milestone;
-use DoppioGancio\GitLab\Domain\User;
+use DoppioGancio\GitLab\Resource\MergeRequest;
+use DoppioGancio\GitLab\Resource\MergeRequestCreate;
+use DoppioGancio\GitLab\Resource\Milestone;
+use DoppioGancio\GitLab\Resource\User;
 use DoppioGancio\GitLab\Repository\MergeRequestRepository;
 use DoppioGancio\MockedClient\HandlerBuilder;
 use DoppioGancio\MockedClient\MockedGuzzleClientBuilder;

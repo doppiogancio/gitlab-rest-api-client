@@ -2,8 +2,8 @@
 
 namespace DoppioGancio\GitLab\Api;
 
-use DoppioGancio\GitLab\Domain\MergeRequest;
-use DoppioGancio\GitLab\Domain\Project;
+use DoppioGancio\GitLab\Resource\MergeRequest;
+use DoppioGancio\GitLab\Resource\Project;
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -25,10 +25,12 @@ class MergeRequestApi
 
     public function list(string $projectId, array $parameters = []): PromiseInterface
     {
-        return $this->client->requestAsync(
-            'GET',
-            $this->urlBuilder->endpoint(sprintf('projects/%s/merge_requests', $projectId), $parameters)
-        )->then(function (ResponseInterface $response): array {
+        $url = $this->urlBuilder->endpoint(sprintf('projects/%s/merge_requests', $projectId), $parameters);
+
+        // https://gitlab.com/api/v4/projects/{{projectId}}/merge_requests?state=merged&author_username=doppiogancio&order_by=updated_at&sort=desc
+
+        return $this->client->requestAsync('GET', $url)
+            ->then(function (ResponseInterface $response): array {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),
                 sprintf("array<%s>", MergeRequest::class),

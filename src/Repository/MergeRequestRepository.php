@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DoppioGancio\GitLab\Repository;
 
-use DoppioGancio\GitLab\Domain\MergeRequest;
-use DoppioGancio\GitLab\Domain\MergeRequestCreate;
+use DoppioGancio\GitLab\Resource\MergeRequest;
+use DoppioGancio\GitLab\Resource\MergeRequestCreate;
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;
