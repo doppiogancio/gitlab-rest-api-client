@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace DoppioGancio\GitLab;
 
+use DoppioGancio\GitLab\Api\BranchApi;
+use DoppioGancio\GitLab\Api\GroupApi;
+use DoppioGancio\GitLab\Api\MergeRequestApi;
+use DoppioGancio\GitLab\Api\ProjectApi;
 use DoppioGancio\GitLab\Repository\BranchRepository;
 use DoppioGancio\GitLab\Repository\MergeRequestRepository;
 use DoppioGancio\GitLab\Url\UrlBuilder;
@@ -11,33 +15,47 @@ use GuzzleHttp\ClientInterface;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 
-use function sprintf;
-
 class Client
 {
     private ClientInterface $client;
     private Serializer $serializer;
     private UrlBuilder $urlBuilder;
 
-    public function __construct(ClientInterface $client, string $projectName)
+    public function __construct(ClientInterface $client, string $projectId)
     {
         $this->client     = $client;
         $this->serializer = SerializerBuilder::create()->build();
-        $this->urlBuilder = new UrlBuilder(sprintf('/api/v4/projects/%s', $projectName));
+        $this->urlBuilder = new UrlBuilder($projectId);
     }
 
-    public function branch(): BranchRepository
+    public function group(): GroupApi
     {
-        return new BranchRepository(
+        return new GroupApi(
+            $this->client,
+            $this->serializer
+        );
+    }
+
+    public function project(): ProjectApi
+    {
+        return new ProjectApi(
+            $this->client,
+            $this->serializer
+        );
+    }
+
+    public function branch(): BranchApi
+    {
+        return new BranchApi(
             $this->client,
             $this->serializer,
             $this->urlBuilder
         );
     }
 
-    public function mergeRequest(): MergeRequestRepository
+    public function mergeRequest(): MergeRequestApi
     {
-        return new MergeRequestRepository(
+        return new MergeRequestApi(
             $this->client,
             $this->serializer,
             $this->urlBuilder
