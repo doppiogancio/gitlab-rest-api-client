@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\GitLab\Api;
 
 use DoppioGancio\GitLab\Resource\Branch;
-use DoppioGancio\GitLab\Resource\Project;
-use DoppioGancio\GitLab\Url\UrlBuilder;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\PromiseInterface;
-use JMS\Serializer\Serializer;
 use Psr\Http\Message\ResponseInterface;
 
-class BranchApi extends BaseResourceManager
+use function sprintf;
+
+class BranchApi extends BaseApi
 {
     public function list(string $projectId): PromiseInterface
     {
@@ -20,7 +20,7 @@ class BranchApi extends BaseResourceManager
         )->then(function (ResponseInterface $response): array {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),
-                sprintf("array<%s>", Branch::class),
+                sprintf('array<%s>', Branch::class),
                 'json'
             );
         });
@@ -31,6 +31,24 @@ class BranchApi extends BaseResourceManager
         return $this->client->requestAsync(
             'GET',
             $this->urlBuilder->endpoint(sprintf('projects/%s/repository/branches/%s', $projectId, $branchName))
+        )->then(function (ResponseInterface $response): Branch {
+            return $this->serializer->deserialize(
+                (string) $response->getBody(),
+                Branch::class,
+                'json'
+            );
+        });
+    }
+
+    public function create(string $projectID, string $branchName, string $ref): PromiseInterface
+    {
+        $endpoint = sprintf('projects/%s/repository/branches', $projectID);
+        return $this->client->requestAsync(
+            'POST',
+            $this->urlBuilder->endpoint($endpoint, [
+                'branch' => $branchName,
+                'ref' => $ref,
+            ])
         )->then(function (ResponseInterface $response): Branch {
             return $this->serializer->deserialize(
                 (string) $response->getBody(),

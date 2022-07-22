@@ -18,6 +18,7 @@ class UrlBuilder
         if (! empty($queryParameters)) {
             $url = sprintf('%s?%s', $url, http_build_query($queryParameters));
         }
+
         return $url;
     }
 }

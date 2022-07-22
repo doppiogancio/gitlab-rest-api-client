@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DoppioGancio\Test\GitLab\Repository;
+namespace DoppioGancio\Test\GitLab\Api;
 
 use DoppioGancio\GitLab\Client;
+use DoppioGancio\GitLab\Api\MergeRequestApi;
 use DoppioGancio\GitLab\Resource\MergeRequest;
 use DoppioGancio\GitLab\Resource\MergeRequestCreate;
 use DoppioGancio\GitLab\Resource\Milestone;
 use DoppioGancio\GitLab\Resource\User;
-use DoppioGancio\GitLab\Repository\MergeRequestRepository;
 use DoppioGancio\MockedClient\HandlerBuilder;
 use DoppioGancio\MockedClient\MockedGuzzleClientBuilder;
 use DoppioGancio\MockedClient\Route\RouteBuilder;
@@ -19,14 +19,14 @@ use PHPUnit\Framework\TestCase;
 
 use function assert;
 
-class MergeRequestRepositoryTest extends TestCase
+class MergeRequestApiTest extends TestCase
 {
     public function testList(): void
     {
         $repo = $this->getMergeRequestRepository();
 
         /** @var MergeRequest[] $list */
-        $list = $repo->list()->wait();
+        $list = $repo->list('project-name')->wait();
 
         $this->assertCount(1, $list);
         $mr = $list[0];
@@ -185,13 +185,13 @@ class MergeRequestRepositoryTest extends TestCase
     {
         $repo = $this->getMergeRequestRepository();
 
-        $mr = $repo->merge(123)->wait();
+        $mr = $repo->merge('project-name', 123)->wait();
         assert($mr instanceof MergeRequest);
 
         $this->assertEquals('merged', $mr->getState());
     }
 
-    public function getMergeRequestRepository(): MergeRequestRepository
+    public function getMergeRequestRepository(): MergeRequestApi
     {
         $handlerBuilder = new HandlerBuilder(
             Psr17FactoryDiscovery::findServerRequestFactory()
@@ -205,7 +205,7 @@ class MergeRequestRepositoryTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('GET')
-                ->withPath('/api/v4/projects/project-name/merge_requests')
+                ->withPath('projects/project-name/merge_requests')
                 ->withFileResponse(__DIR__ . '/../fixtures/merge_request.list.json')
                 ->build()
         );
@@ -213,7 +213,7 @@ class MergeRequestRepositoryTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('POST')
-                ->withPath('/api/v4/projects/project-name/merge_requests')
+                ->withPath('projects/project-name/merge_requests')
                 ->withFileResponse(__DIR__ . '/../fixtures/merge_request.create.json')
                 ->build()
         );
@@ -221,13 +221,12 @@ class MergeRequestRepositoryTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('PUT')
-                ->withPath('/api/v4/projects/project-name/123/merge')
+                ->withPath('projects/project-name/123/merge')
                 ->withFileResponse(__DIR__ . '/../fixtures/merge_request.merge.json')
                 ->build()
         );
 
         $client = (new MockedGuzzleClientBuilder($handlerBuilder))->build();
-
-        return (new Client($client, 'project-name'))->mergeRequest();
+        return (new Client($client))->mergeRequest();
     }
 }

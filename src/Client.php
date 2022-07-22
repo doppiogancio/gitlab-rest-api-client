@@ -8,8 +8,6 @@ use DoppioGancio\GitLab\Api\BranchApi;
 use DoppioGancio\GitLab\Api\GroupApi;
 use DoppioGancio\GitLab\Api\MergeRequestApi;
 use DoppioGancio\GitLab\Api\ProjectApi;
-use DoppioGancio\GitLab\Repository\BranchRepository;
-use DoppioGancio\GitLab\Repository\MergeRequestRepository;
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface as HttpClient;
 use JMS\Serializer\Serializer;
@@ -19,13 +17,11 @@ class Client
 {
     private HttpClient $client;
     private Serializer $serializer;
-    private UrlBuilder $urlBuilder;
 
-    public function __construct(HttpClient $client, string $projectId)
+    public function __construct(HttpClient $client)
     {
         $this->client     = $client;
         $this->serializer = SerializerBuilder::create()->build();
-        $this->urlBuilder = new UrlBuilder($projectId);
     }
 
     public function group(): GroupApi
@@ -48,8 +44,7 @@ class Client
     {
         return new BranchApi(
             $this->client,
-            $this->serializer,
-            $this->urlBuilder
+            $this->serializer
         );
     }
 
@@ -57,8 +52,7 @@ class Client
     {
         return new MergeRequestApi(
             $this->client,
-            $this->serializer,
-            $this->urlBuilder
+            $this->serializer
         );
     }
 }

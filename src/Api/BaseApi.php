@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DoppioGancio\GitLab\Api;
 
 use DoppioGancio\GitLab\Url\UrlBuilder;
 use GuzzleHttp\ClientInterface;
 use JMS\Serializer\Serializer;
 
-abstract class BaseResourceManager
+abstract class BaseApi
 {
     protected ClientInterface $client;
     protected Serializer $serializer;
@@ -14,7 +16,7 @@ abstract class BaseResourceManager
 
     public function __construct(ClientInterface $client, Serializer $serializer)
     {
-        $this->client = $client;
+        $this->client     = $client;
         $this->serializer = $serializer;
         $this->urlBuilder = new UrlBuilder();
     }

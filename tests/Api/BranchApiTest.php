@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DoppioGancio\GitLab\Test\Repository;
+namespace DoppioGancio\GitLab\Test\Api;
 
 use DoppioGancio\GitLab\Client;
+use DoppioGancio\GitLab\Api\BranchApi;
 use DoppioGancio\GitLab\Resource\Branch;
-use DoppioGancio\GitLab\Repository\BranchRepository;
 use DoppioGancio\MockedClient\HandlerBuilder;
 use DoppioGancio\MockedClient\MockedGuzzleClientBuilder;
 use DoppioGancio\MockedClient\Route\RouteBuilder;
@@ -15,14 +15,14 @@ use PHPUnit\Framework\TestCase;
 
 use function assert;
 
-class BranchRepositoryTest extends TestCase
+class BranchApiTest extends TestCase
 {
     public function testList(): void
     {
         $repo = $this->getBranchRepository();
 
         /** @var Branch[] $list */
-        $list = $repo->list()->wait();
+        $list = $repo->list('testproject')->wait();
 
         $this->assertCount(1, $list);
         $branch = $list[0];
@@ -55,13 +55,13 @@ class BranchRepositoryTest extends TestCase
     {
         $repo = $this->getBranchRepository();
 
-        $newBranch = $repo->create('aa', 'xxx')->wait();
+        $newBranch = $repo->create('testproject', 'aa', 'xxx')->wait();
         assert($newBranch instanceof Branch);
 
         $this->assertEquals('newbranch', $newBranch->getName());
     }
 
-    public function getBranchRepository(): BranchRepository
+    public function getBranchRepository(): BranchApi
     {
         $handlerBuilder = new HandlerBuilder(
             Psr17FactoryDiscovery::findServerRequestFactory()
@@ -75,7 +75,7 @@ class BranchRepositoryTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('GET')
-                ->withPath('/api/v4/projects/project-name/repository/branches')
+                ->withPath('projects/testproject/repository/branches')
                 ->withFileResponse(__DIR__ . '/../fixtures/branch.list.json')
                 ->build()
         );
@@ -83,13 +83,12 @@ class BranchRepositoryTest extends TestCase
         $handlerBuilder->addRoute(
             $rb->new()
                 ->withMethod('POST')
-                ->withPath('/api/v4/projects/project-name/repository/branches')
+                ->withPath('projects/testproject/repository/branches')
                 ->withFileResponse(__DIR__ . '/../fixtures/branch.create.json')
                 ->build()
         );
 
         $client = (new MockedGuzzleClientBuilder($handlerBuilder))->build();
-
-        return (new Client($client, 'project-name'))->branch();
+        return (new Client($client))->branch();
     }
 }
