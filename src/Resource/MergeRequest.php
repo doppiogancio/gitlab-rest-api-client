@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DoppioGancio\GitLab\Domain;
+namespace DoppioGancio\GitLab\Resource;
 
 use JMS\Serializer\Annotation\Type;
 
@@ -30,17 +30,17 @@ class MergeRequest
     private int $downvotes      = 0;
     private User $author;
 
-    /** @Type("DoppioGancio\GitLab\Domain\User") */
+    /** @Type("DoppioGancio\GitLab\Resource\User") */
     private ?User $assignee;
 
     /**
-     * @Type("array<int,DoppioGancio\GitLab\Domain\User>")
+     * @Type("array<int,DoppioGancio\GitLab\Resource\User>")
      * @var User[]
      */
     private array $assignees;
 
     /**
-     * @Type("array<int,DoppioGancio\GitLab\Domain\User>")
+     * @Type("array<int,DoppioGancio\GitLab\Resource\User>")
      * @var User[]
      */
     private array $reviewers;
@@ -51,7 +51,7 @@ class MergeRequest
     private bool $draft;
     private bool $workInProgress;
 
-    /** @Type("DoppioGancio\GitLab\Domain\Milestone") */
+    /** @Type("DoppioGancio\GitLab\Resource\Milestone") */
     private ?Milestone $milestone;
 
     private bool $mergeWhenPipelineSucceeds;

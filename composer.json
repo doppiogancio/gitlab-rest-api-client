@@ -21,7 +21,8 @@
         "guzzlehttp/guzzle": "^7.4",
         "ext-json": "^8.0",
         "jms/serializer": "^3.15",
-        "symfony/yaml": "^5.3"
+        "symfony/yaml": "^5.3",
+        "league/uri": "^6.7"
     },
     "autoload": {
         "psr-4": {
@@ -40,7 +41,8 @@
         "squizlabs/php_codesniffer": "^3.6",
         "slevomat/coding-standard": "^7.0",
         "phpstan/phpstan": "^1.1",
-        "doctrine/coding-standard": "^9.0"
+        "doctrine/coding-standard": "^9.0",
+        "monolog/monolog": "^3.1"
     },
     "scripts": {
         "tests": "phpunit",
@@ -52,5 +54,10 @@
             "@phpstan",
             "@tests"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

@@ -4,43 +4,55 @@ declare(strict_types=1);
 
 namespace DoppioGancio\GitLab;
 
-use DoppioGancio\GitLab\Repository\BranchRepository;
-use DoppioGancio\GitLab\Repository\MergeRequestRepository;
+use DoppioGancio\GitLab\Api\BranchApi;
+use DoppioGancio\GitLab\Api\GroupApi;
+use DoppioGancio\GitLab\Api\MergeRequestApi;
+use DoppioGancio\GitLab\Api\ProjectApi;
 use DoppioGancio\GitLab\Url\UrlBuilder;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\ClientInterface as HttpClient;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 
-use function sprintf;
-
 class Client
 {
-    private ClientInterface $client;
+    private HttpClient $client;
     private Serializer $serializer;
-    private UrlBuilder $urlBuilder;
 
-    public function __construct(ClientInterface $client, string $projectName)
+    public function __construct(HttpClient $client)
     {
         $this->client     = $client;
         $this->serializer = SerializerBuilder::create()->build();
-        $this->urlBuilder = new UrlBuilder(sprintf('/api/v4/projects/%s', $projectName));
     }
 
-    public function branch(): BranchRepository
+    public function group(): GroupApi
     {
-        return new BranchRepository(
+        return new GroupApi(
             $this->client,
-            $this->serializer,
-            $this->urlBuilder
+            $this->serializer
         );
     }
 
-    public function mergeRequest(): MergeRequestRepository
+    public function project(): ProjectApi
     {
-        return new MergeRequestRepository(
+        return new ProjectApi(
             $this->client,
-            $this->serializer,
-            $this->urlBuilder
+            $this->serializer
+        );
+    }
+
+    public function branch(): BranchApi
+    {
+        return new BranchApi(
+            $this->client,
+            $this->serializer
+        );
+    }
+
+    public function mergeRequest(): MergeRequestApi
+    {
+        return new MergeRequestApi(
+            $this->client,
+            $this->serializer
         );
     }
 }
