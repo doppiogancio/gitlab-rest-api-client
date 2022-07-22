@@ -11,6 +11,7 @@ use DoppioGancio\MockedClient\HandlerBuilder;
 use DoppioGancio\MockedClient\MockedGuzzleClientBuilder;
 use DoppioGancio\MockedClient\Route\RouteBuilder;
 use Http\Discovery\Psr17FactoryDiscovery;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
 use function assert;
@@ -88,7 +89,8 @@ class BranchApiTest extends TestCase
                 ->build()
         );
 
-        $client = (new MockedGuzzleClientBuilder($handlerBuilder))->build();
+        $log = new Logger('name');
+        $client = (new MockedGuzzleClientBuilder($handlerBuilder, $log))->build();
         return (new Client($client))->branch();
     }
 }
