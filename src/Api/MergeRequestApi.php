@@ -12,6 +12,9 @@ use Psr\Http\Message\ResponseInterface;
 
 use function sprintf;
 
+/**
+ * https://docs.gitlab.com/ee/api/merge_requests.html
+ */
 class MergeRequestApi extends BaseApi
 {
     /**
